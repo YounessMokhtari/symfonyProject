@@ -7,9 +7,21 @@ use App\Repository\RestaurantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\GetCollection;
 #[ORM\Entity(repositoryClass: RestaurantRepository::class)]
-#[ApiResource]
+#[ApiResource(operations: [
+    new GetCollection(),
+    new Put(security: "is_granted('ROLE_ADMIN')", securityMessage: 'seule l\' administrateur qui modifier des restaurant'),
+    new Delete(security: "is_granted('ROLE_ADMIN')", securityMessage: 'seule l\' administrateur qui supprimer des restaurant'),
+    new Post(security: "is_granted('ROLE_ADMIN')", securityMessage: 'seule l\' administrateur qui ajoute des restaurant'),
+    new Patch(),
+])]
+
 class Restaurant
 {
     #[ORM\Id]

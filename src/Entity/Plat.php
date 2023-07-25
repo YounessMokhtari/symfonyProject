@@ -5,8 +5,11 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\PlatRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
 
 #[ORM\Entity(repositoryClass: PlatRepository::class)]
+#[Vich\Uploadable]
 #[ApiResource]
 class Plat
 {
@@ -23,6 +26,21 @@ class Plat
 
     #[ORM\ManyToOne(inversedBy: 'plats')]
     private ?Restaurant $restaurant = null;
+
+    
+
+   
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $name = null;
+
+    #[Vich\UploadableField(mapping: 'products', fileNameProperty: 'imageName', size: 'imageSize')]
+    private ?File $imageFile = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updetedAt = null;
+
+  
 
     public function getId(): ?int
     {
@@ -52,6 +70,7 @@ class Plat
 
         return $this;
     }
+   
 
     public function getRestaurant(): ?Restaurant
     {
@@ -64,4 +83,32 @@ class Plat
 
         return $this;
     }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getUpdetedAt(): ?\DateTimeImmutable
+    {
+        return $this->updetedAt;
+    }
+
+    public function setUpdetedAt(?\DateTimeImmutable $updetedAt): static
+    {
+        $this->updetedAt = $updetedAt;
+
+        return $this;
+    }
+
+   
+
+    
 }
