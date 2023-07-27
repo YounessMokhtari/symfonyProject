@@ -42,8 +42,8 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
-        - { path: '^/api/(commandes|plats|restaurants)', roles: ROLE_CLIENT }
-       # - { path: '^/api/clients', method: [GET,PUT], roles: ROLE_CLIENT }
+        - { path: '^/api/(commandes|plats|restaurants|clients)', roles: ROLE_CLIENT }
+        #- { path: '^/api/clients', method: [GET,PUT], roles: ROLE_CLIENT }
         #- { path: '^/api/', roles: ROLE_ADMIN }
         - { path: '^/api', roles: PUBLIC_ACCESS }
         

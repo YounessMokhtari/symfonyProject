@@ -20,10 +20,12 @@ use App\Controller\RegistrationController;
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 #[ApiResource(operations: [
     new GetCollection(),
-    new Put(name: 'api_update_Client_with_user', uriTemplate: '/api/client/{id}', controller: RegistrationController::class),
-    new Delete(),
+    new Put(name: 'api_update_Client_with_user', uriTemplate: '/api/client/{id}', controller: RegistrationController::class,
+    security: "is_granted('ROLE_ADMIN') or (user == object.getUser())"
+),
+    new Delete(security: "is_granted('ROLE_ADMIN')"),
     new Post(name: 'api_register_client_with_user', uriTemplate: '/api/clients/register-with-user', controller: RegistrationController::class),
-    new Post(),
+    new Post(security: "is_granted('ROLE_ADMIN')"),
     new Patch(),
 ],
 normalizationContext: ['groups' => ['read']],
