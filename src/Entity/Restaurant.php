@@ -13,6 +13,8 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\GetCollection;
+use Doctrine\DBAL\Types\Types;
+
 #[ORM\Entity(repositoryClass: RestaurantRepository::class)]
 #[ApiResource(operations: [
     new GetCollection(),
@@ -31,6 +33,13 @@ class Restaurant
 
     #[ORM\Column(length: 50)]
     private ?string $nom = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $Heure_Ouverture = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $Adresse = null;
+
 
     #[ORM\OneToMany(mappedBy: 'restaurant', targetEntity: Plat::class)]
     private Collection $plats;
@@ -57,6 +66,30 @@ class Restaurant
     public function setNom(string $nom): static
     {
         $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getHeureOuverture(): ?\DateTimeInterface
+    {
+        return $this->Heure_Ouverture;
+    }
+
+    public function setHeureOuverture(?\DateTimeInterface $Heure_Ouverture): static
+    {
+        $this->Heure_Ouverture = $Heure_Ouverture;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->Adresse;
+    }
+
+    public function setAdresse(?string $Adresse): static
+    {
+        $this->Adresse = $Adresse;
 
         return $this;
     }

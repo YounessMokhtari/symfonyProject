@@ -21,6 +21,10 @@ class Plat
     #[ORM\Column(length: 50)]
     private ?string $nom = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $Description = null;
+
+
     #[ORM\Column]
     private ?float $prix = null;
 
@@ -67,6 +71,18 @@ class Plat
     public function setPrix(float $prix): static
     {
         $this->prix = $prix;
+
+        return $this;
+    }
+    
+    public function getDescription(): ?string
+    {
+        return $this->Description;
+    }
+
+    public function setDescription(?string $Description): static
+    {
+        $this->Description = $Description;
 
         return $this;
     }

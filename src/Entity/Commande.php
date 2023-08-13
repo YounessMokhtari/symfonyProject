@@ -5,9 +5,29 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CommandeRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\GetCollection;
+use App\Controller\CommandeController;
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
-#[ApiResource]
+//#[ApiResource]
+#[ApiResource(operations: [
+    new Post(name: 'api_register_Commande', uriTemplate: '/Commandes/register', controller: CommandeController::class),
+    new Get(name: 'api_livreur_Commande', uriTemplate: '/Commandes/getCommande/livreur', controller: CommandeController::class),
+    new Post(name: 'api_Client_Commande', uriTemplate: '/Commandes/Notifications/Client', controller: CommandeController::class),
+    new Post(name: 'api_Client_CommandePrix', uriTemplate: '/Commandes/getCommande/Client/PrixTotal', controller: CommandeController::class),
+    new Post(name: 'api_Livreur_accepter', uriTemplate: '/Commandes/Livreur/Accepter', controller: CommandeController::class),
+   // new Post(name: 'api_Livreur_refuser', uriTemplate: '/Commandes/Livreur/Refuser', controller: CommandeController::class),
+    new Post(name: 'api_Client_Plat', uriTemplate: '/Commandes/Client/PlatRe', controller: CommandeController::class),
+    new Post(name: 'api_Client_Plat2', uriTemplate: '/Commandes/Client/Panier', controller: CommandeController::class),
+    new Post(name: 'api_Client_Plat3', uriTemplate: '/Commandes/Client/Modifier_Plat', controller: CommandeController::class),
+    new Post(name: 'api_Client_Plat4', uriTemplate: '/Commandes/Client/Suppimer_Plat', controller: CommandeController::class),
+    new Post(name: 'api_Client_C', uriTemplate: '/Commandes/Client/Confirmer', controller: CommandeController::class),
+],
+)]
 class Commande
 {
     #[ORM\Id]
@@ -15,14 +35,17 @@ class Commande
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $nomCommande = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $Etat = null;
 
-    #[ORM\Column]
-    private ?int $nombrePlats = null;
+   #[ORM\Column(nullable: true)]
+    private ?int $Prix_Total = null;
 
-    #[ORM\Column]
-    private ?float $prixTotal = null;
+    #[ORM\ManyToOne(inversedBy: 'commandes')]
+    private ?Plat $platt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $Nombre = null;
 
     #[ORM\ManyToOne(inversedBy: 'commandes')]
     private ?Client $client = null;
@@ -50,26 +73,38 @@ class Commande
         return $this;
     }
 
-    public function getNombrePlats(): ?int
+   public function getNombre(): ?int
     {
-        return $this->nombrePlats;
+        return $this->Nombre;
     }
 
-    public function setNombrePlats(int $nombrePlats): static
+    public function setNombre(?int $Nombre): static
     {
-        $this->nombrePlats = $nombrePlats;
+        $this->Nombre = $Nombre;
 
         return $this;
     }
 
-    public function getPrixTotal(): ?float
+    public function getPrixTotal(): ?int
     {
-        return $this->prixTotal;
+        return $this->Prix_Total;
     }
 
-    public function setPrixTotal(float $prixTotal): static
+    public function setPrixTotal(?int $Prix_Total): static
     {
-        $this->prixTotal = $prixTotal;
+        $this->Prix_Total = $Prix_Total;
+
+        return $this;
+    }
+
+    public function getEtat(): ?string
+    {
+        return $this->Etat;
+    }
+
+    public function setEtat(?string $Etat): static
+    {
+        $this->Etat = $Etat;
 
         return $this;
     }

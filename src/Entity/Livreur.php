@@ -73,6 +73,9 @@ class Livreur
     #[Groups(['read', 'write'])]
     private ?float $longitude = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $Localisation = null;
+
     public function __construct()
     {
         $this->commandes = new ArrayCollection();
@@ -139,6 +142,18 @@ class Livreur
     public function setCin(?string $cin): static
     {
         $this->cin = $cin;
+
+        return $this;
+    }
+
+    public function getLocalisation(): ?string
+    {
+        return $this->Localisation;
+    }
+
+    public function setLocalisation(?string $Localisation): static
+    {
+        $this->Localisation = $Localisation;
 
         return $this;
     }
